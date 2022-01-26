@@ -29,12 +29,12 @@ galaxy_info:
   # https://galaxy.ansible.com/api/v1/platforms/
   #
   platforms:
-   - name: CentOS 
+   - name: EL 
      versions:
      - 7
    - name: Ubuntu
      versions:
-     - 20.04
+     - focal
 
   galaxy_tags:
     - cvmfs 
