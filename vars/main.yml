@@ -1,0 +1,5 @@
+---
+# vars file for ansible-role-laniakea-cvmfs-client
+cvmfs_role: client
+galaxy_cvmfs_repos_enabled: config-repo
+
