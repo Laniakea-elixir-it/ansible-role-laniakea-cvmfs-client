@@ -1,5 +1,5 @@
 ---
-# handlers file for ansible-role-laniakea-cvmfs-client
+# handlers file for cvmfs_client
 - name: probe_elixir_cvmfs
   shell:
     cmd: 'cvmfs_config probe {{ la_cvmfs_repository }}'

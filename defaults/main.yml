@@ -1,4 +1,4 @@
 ---
-# defaults file for ansible-role-laniakea-cvmfs-client
+# defaults file for cvmfs_client
 la_cvmfs_repository: data.elixir-italy-cvmfs
 elixir_it_repo: true
