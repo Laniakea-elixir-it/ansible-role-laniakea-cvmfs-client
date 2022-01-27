@@ -1,11 +1,8 @@
 ---
 # tasks file for cvmfs-client-elixir-it
-- name: add epel-repo if the host is redhat
-  include_role: geerlingguy.repo-epel
-  when: ansible_os_family == redhat
-
 - name: run galaxyproject cvmfs role
-  include_role: galaxyproject.cvmfs
+  include_role:
+    name: galaxyproject.cvmfs
 
 - name: download elixir-italy-cvmfs config
   get_url:
@@ -14,5 +11,5 @@
   with_items:
     - { conf_file: cvmfs_server_config_files, dest_dir: config.d, ext: conf }
     - { conf_file: cvmfs_server_keys, dest_dir: keys, ext: pub }
-  when: elixir-it-repo
   notify: probe_elixir_cvmfs 
+  when: elixir_it_repo
