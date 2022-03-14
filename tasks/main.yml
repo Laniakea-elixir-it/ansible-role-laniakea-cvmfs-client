@@ -3,6 +3,8 @@
 - name: run galaxyproject cvmfs role
   include_role:
     name: galaxyproject.cvmfs
+  vars:
+    cvmfs_role: client 
 
 - name: download elixir-italy-cvmfs config
   get_url:
