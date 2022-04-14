@@ -1,17 +1,39 @@
 ---
-# tasks file for cvmfs-client-elixir-it
-- name: run galaxyproject cvmfs role
-  include_role:
-    name: galaxyproject.cvmfs
-  vars:
-    cvmfs_role: client 
+- name: set only specific galaxy-repos
+  lineinfile:
+    path: "/etc/cvmfs/default.local"
+    regexp: '(^CVMFS_REPOSITORIES=)'
+    line: 'CVMFS_REPOSITORIES="{{",".join(repos) }}"'
+    state: present
+  tags: repo
 
-- name: download elixir-italy-cvmfs config
-  get_url:
-    url: 'https://raw.githubusercontent.com/indigo-dc/Reference-data-galaxycloud-repository/master/{{ item.conf_file }}/{{ la_cvmfs_repository }}.{{ item.ext }}'
-    dest: '/etc/cvmfs/{{ item.dest_dir }}/{{ la_cvmfs_repository }}.{{ item.ext }}'
-  with_items:
-    - { conf_file: cvmfs_server_config_files, dest_dir: config.d, ext: conf }
-    - { conf_file: cvmfs_server_keys, dest_dir: keys, ext: pub }
-  notify: probe_elixir_cvmfs 
+- name: install and configure elixir-it client
+  block:
+    - name: download elixir-italy-cvmfs configs
+      get_url:
+        url: 'https://raw.githubusercontent.com/indigo-dc/Reference-data-galaxycloud-repository/master/{{ item.conf_file }}/{{ la_cvmfs_repository }}.{{ item.ext }}'
+        dest: '/etc/cvmfs/{{ item.dest_dir }}/{{ la_cvmfs_repository }}.{{ item.ext }}'
+      with_items:
+        - { conf_file: cvmfs_server_config_files, dest_dir: config.d, ext: conf }
+        - { conf_file: cvmfs_server_keys, dest_dir: keys, ext: pub }
+    
+    - name: check if the config is already set
+      lineinfile: 
+        dest: /etc/cvmfs/default.local
+        regexp: "{{ la_cvmfs_repository }}"
+        state: present
+        line: "check presence"
+      check_mode: yes
+      register: repo_exist
+    
+    - name: append elixir-cvmfs-repo to config
+      lineinfile:
+        path: "/etc/cvmfs/default.local"
+        backrefs: yes
+        regexp: '(^CVMFS_REPOSITORIES=.+?(?="))'
+        line: '\1,{{ la_cvmfs_repository }}"'
+        state: present
+      when: repo_exist
+
   when: elixir_it_repo
+  tags: elixir-repo

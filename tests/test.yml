@@ -2,4 +2,4 @@
 - hosts: galaxy
   become: true
   roles:
-    - ../../cvmfs_client
+    - ../../ansible-role-laniakea-cvmfs-client-config

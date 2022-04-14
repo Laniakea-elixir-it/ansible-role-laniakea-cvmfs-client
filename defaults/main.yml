@@ -2,3 +2,5 @@
 # defaults file for cvmfs_client
 la_cvmfs_repository: data.elixir-italy-cvmfs
 elixir_it_repo: true
+# galaxy repos to set in default local
+repos: [ "data.galaxyproject.org"]

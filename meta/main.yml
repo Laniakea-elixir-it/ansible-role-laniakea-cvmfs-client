@@ -19,7 +19,11 @@ galaxy_info:
     - laniakea
 
 dependencies:
-  - galaxyproject.cvmfs
-  - geerlingguy.repo-epel
+  - role: galaxyproject.cvmfs
+    version: 0.2.14
+    vars:
+      cvmfs_role: client
+      galaxy_cvmfs_repos_enabled: true
+    
   # List your role dependencies here, one per line. Be sure to remove the '[]' above,
   # if you add dependencies to this list.
