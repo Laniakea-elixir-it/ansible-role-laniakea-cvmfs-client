@@ -34,6 +34,27 @@
         line: '\1,{{ la_cvmfs_repository }}"'
         state: present
       when: repo_exist
+    
+    - name: set GARR stratum 1
+      block:
+        - name: set galaxy repo stratum 1
+          lineinfile:
+            path: "/etc/cvmfs/domain.d/galaxyproject.org.conf"
+            backrefs: yes
+            regexp: '(^CVMFS_SERVER_URL=)'
+            line: '\1"http://cvmfs1-garr0.cloud.garrservices.it/cvmfs/@fqrn@"'
+            state: present
+          
+        - name: set galaxy repo stratum 1
+          lineinfile:
+            path: "/etc/cvmfs/config.d/data.elixir-italy-cvmfs.conf"
+            backrefs: yes
+            regexp: '(^CVMFS_SERVER_URL=)'
+            line: '\1http://elixirit1-garr0.cloud.garrservices.it/cvmfs/data.elixir-italy-cvmfs'
+            state: present
+      when: garr_mirrors
 
   when: elixir_it_repo
   tags: elixir-repo
+
+ 
